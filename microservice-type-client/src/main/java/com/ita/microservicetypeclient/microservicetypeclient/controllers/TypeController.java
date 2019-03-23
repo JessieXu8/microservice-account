@@ -4,10 +4,7 @@ import com.ita.microservicetypeclient.microservicetypeclient.entities.Type;
 import com.ita.microservicetypeclient.microservicetypeclient.services.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.*;
@@ -41,5 +38,10 @@ public class TypeController {
     public ResponseEntity addType(@RequestBody Type type) {
         typeService.addType(type);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(path = "/{typeName}")
+    public Type getTypeByTypeName(@PathVariable String typeName) {
+        return typeService.getTypeByTypeName(typeName);
     }
 }

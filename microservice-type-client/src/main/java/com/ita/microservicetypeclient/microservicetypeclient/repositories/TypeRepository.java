@@ -9,4 +9,5 @@ import java.util.*;
 @Repository
 public interface TypeRepository extends JpaRepository<Type, Integer> {
     List<Type> findAllByAccountKind(String accountKind);
+    Type findTypeByType(String type);
 }

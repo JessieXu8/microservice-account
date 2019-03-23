@@ -30,4 +30,8 @@ public class TypeService {
         }
         typeRepository.save(type);
     }
+
+    public Type getTypeByTypeName(String typeName) {
+        return typeRepository.findTypeByType(typeName);
+    }
 }
