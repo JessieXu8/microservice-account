@@ -1,0 +1,28 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: micro-service-zuul-client
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8383/eureka/
+#zuul:
+##  path indicates that it will jump to "http://localhost:8181/" when we visit url with "/api"
+#  routes:
+#    item:
+#      path: /api/**
+#      url: http://localhost:8181/
+
+zuul:
+  routes:
+    micro-service-user-client: /user/**
+    micro-service-account-client: /account/**
+    micro-service-type-client: /type/**
+    micro-service-zuul-client : /login**
+
+
