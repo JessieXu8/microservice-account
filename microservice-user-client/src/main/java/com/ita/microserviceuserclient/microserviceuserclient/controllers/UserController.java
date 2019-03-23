@@ -18,10 +18,17 @@ public class UserController {
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<UserInfo> getUserInfo(@RequestParam String openId) {
+    public ResponseEntity<UserInfo> getUserInfo(@RequestParam String userId) {
         HttpStatus httpStatus = HttpStatus.OK;
-        UserInfo userInfo = userService.getUserInfo(openId);
+        UserInfo userInfo = userService.getUserInfo(userId);
         return new ResponseEntity<>(userInfo, httpStatus);
+    }
+
+    @PostMapping(path = "")
+    public ResponseEntity updateUserInfo(@RequestParam String userId, @RequestBody User user) {
+        HttpStatus httpStatus = HttpStatus.NO_CONTENT;
+        userService.updateUserInfo(userId, user);
+        return new ResponseEntity(httpStatus);
     }
 
     @GetMapping(path = "/{userId}")
@@ -29,14 +36,10 @@ public class UserController {
         return userService.findUserById(userId);
     }
 
-//    @PostMapping(path = "")
-//    public ResponseEntity updateUserInfo(@RequestParam String trd_session, @RequestBody User user) {
-//        HttpStatus httpStatus = HttpStatus.NO_CONTENT;
-//        String openId = loginService.getOpenId(trd_session);
-//        if(openId == null){
-//            httpStatus = HttpStatus.UNAUTHORIZED;
-//        }
-//        userService.updateUserInfo(openId, user);
-//        return new ResponseEntity(httpStatus);
-//    }
+    @PatchMapping(path = "")
+    public ResponseEntity addUser(@RequestParam String userId) {
+        HttpStatus httpStatus = HttpStatus.NO_CONTENT;
+        userService.addUser(userId);
+        return new ResponseEntity(httpStatus);
+    }
 }
