@@ -111,9 +111,11 @@ public class AccountService {
                 record.setMoney((account.getType().getAccountKind().equals("income") ? "+" : "-") + account.getAmount());
                 records.add(record);
             }
+            Collections.reverse(records);
             dayOfBill.setRecords(records);
             monthOfBill.getBill().add(dayOfBill);
         }
+        Collections.reverse(monthOfBill.getBill());
         return monthOfBill;
     }
 
