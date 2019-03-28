@@ -42,4 +42,19 @@ public class UserController {
         userService.addUser(userId);
         return new ResponseEntity(httpStatus);
     }
+
+    @PostMapping(path = "/create")
+    public ResponseEntity createUser(@RequestParam String userId) {
+        HttpStatus httpStatus = HttpStatus.NO_CONTENT;
+        userService.addUser(userId);
+        return new ResponseEntity(httpStatus);
+    }
+
+    @GetMapping(path = "/create")
+    public ResponseEntity createUser1(@RequestParam String userId) {
+        HttpStatus httpStatus = HttpStatus.NO_CONTENT;
+        userService.addUser(userId);
+        return new ResponseEntity(httpStatus);
+    }
+
 }

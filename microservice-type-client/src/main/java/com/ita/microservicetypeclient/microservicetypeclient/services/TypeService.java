@@ -34,4 +34,8 @@ public class TypeService {
     public Type getTypeByTypeName(String typeName) {
         return typeRepository.findTypeByType(typeName);
     }
+
+    public Type findById(String typeId) {
+        return typeRepository.findById(Integer.valueOf(typeId)).orElse(null);
+    }
 }

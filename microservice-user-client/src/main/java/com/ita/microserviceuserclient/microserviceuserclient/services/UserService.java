@@ -27,17 +27,18 @@ public class UserService {
     public UserInfo getUserInfo(String userId) {
         UserInfo userInfo = new UserInfo();
         List<User> users = userRepository.findByUserId(userId);
-        List<Account> accounts = accountService.getAllUndeletedAccounts();
+        List<Account> accounts = accountService.getAllUndeletedAccounts(userId);
         if(users == null || users.isEmpty() || accounts.isEmpty()) {
             return userInfo;
         }
         User user = users.get(0);
-        List<Account> userAccounts = accounts.stream().filter( account -> account.getUser().equals(user)).collect(Collectors.toList());
+        List<Account> undeletedAccounts = user.getAccountList().stream().filter(account -> account.getIsDelete().equals("0")).collect(Collectors.toList());
+//        List<Account> userAccounts = accounts.stream().filter( account -> account.getUser().equals(user)).collect(Collectors.toList());
         long timeNow = System.currentTimeMillis();
         userInfo.setDays(String.format("%d", (timeNow - user.getDate().getTime() + 1) / oneDayTime));
-        userInfo.setRecords(String.format("%d", userAccounts.size()));
+        userInfo.setRecords(String.format("%d", undeletedAccounts.size()));
         Double balance = 0.0;
-        for(Account account : userAccounts) {
+        for(Account account : undeletedAccounts) {
             if(account.isIncome()){
                 balance += account.getAmount();
             } else {

@@ -29,6 +29,10 @@ public class UserService {
         //serviceInstance.getHost();拿到主机名
         //serviceInstance.getPort();拿到端口号
         String url = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort();
-        restTemplate.patchForObject(url + "/users/" + openId, null, ResponseEntity.class);
+        url += "/create" + "?userId=" + openId;
+//        restTemplate.patchForObject(url + "/users/" + openId, null, ResponseEntity.class);
+//        restTemplate.postForObject(url + "/create" + "?userId=" + openId, null, ResponseEntity.class);
+//        restTemplate.put(url, null);
+        restTemplate.getForObject(url, ResponseEntity.class);
     }
 }
