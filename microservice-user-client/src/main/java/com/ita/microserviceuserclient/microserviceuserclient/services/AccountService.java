@@ -16,7 +16,7 @@ public class AccountService {
 
     @Autowired DiscoveryClient discoveryClient;
 
-    public List<Account> getAllUndeletedAccounts() {
+    public List<Account> getAllUndeletedAccounts(String userId) {
         List<ServiceInstance> instances = discoveryClient.getInstances("micro-service-account-client");
         if (null == instances || instances.isEmpty()){
             return null;

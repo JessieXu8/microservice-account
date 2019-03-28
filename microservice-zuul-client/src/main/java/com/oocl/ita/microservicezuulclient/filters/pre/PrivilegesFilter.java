@@ -11,8 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class PrivilegesFilter extends ZuulFilter {
@@ -38,7 +37,8 @@ public class PrivilegesFilter extends ZuulFilter {
         // url /login 的不过滤
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
-        return !"/login".equals(request.getRequestURI());
+        return !("/login".equals(request.getRequestURI()) ||
+                request.getRequestURI().contains("/type"));
     }
 
     @Override
@@ -47,24 +47,31 @@ public class PrivilegesFilter extends ZuulFilter {
         HttpServletRequest request = context.getRequest();
         Map<String, String[]> requestParams = request.getParameterMap();
         String[] trd_sessions = requestParams.get(sessionKey);
+        Map<String, List<String>> newRequestParams ;
         if(trd_sessions == null || trd_sessions.length == 0){
             context.setSendZuulResponse(false);
             context.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
             return null;
         } else {
             String userId = loginService.getUserIdBySessionKey(trd_sessions[0]);
-            addUserIdToContext(context, userId, requestParams);
+            newRequestParams = addUserIdToContext(context, userId, requestParams);
+            context.setRequestQueryParams(newRequestParams);
         }
         return null;
     }
 
-    private void addUserIdToContext(RequestContext context, String userId, Map<String, String[]> requestParams) {
+    private Map<String, List<String>> addUserIdToContext(RequestContext context, String userId, Map<String, String[]> requestParams) {
+        Map<String, List<String>> newRequestParams = new HashMap<>();
         if(StringUtils.isEmpty(userId)){
             context.setSendZuulResponse(false);
             context.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-            return ;
+            return newRequestParams;
         }
-        requestParams.remove(sessionKey);
-        requestParams.put(user_id, new String[]{userId});
+        for(Map.Entry<String, String[]> entry : requestParams.entrySet()){
+            if(entry.getKey().equals(sessionKey)) continue;
+            newRequestParams.put(entry.getKey(), Arrays.asList(entry.getValue()));
+        }
+        newRequestParams.put(user_id, Collections.singletonList(userId));
+        return newRequestParams;
     }
 }

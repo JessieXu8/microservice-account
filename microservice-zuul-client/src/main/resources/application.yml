@@ -24,5 +24,12 @@ zuul:
     micro-service-account-client: /account/**
     micro-service-type-client: /type/**
     micro-service-zuul-client : /login**
+  host:
+    connect-timeout-millis: 200000
+    socket-timeout-millis: 60000
+#socket超时
+#ribbon:
+#  ReadTimeout: 10000
+#  ConnectTimeout: 10000
 
 

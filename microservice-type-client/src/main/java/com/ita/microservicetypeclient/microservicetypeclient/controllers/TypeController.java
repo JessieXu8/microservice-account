@@ -40,8 +40,8 @@ public class TypeController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(path = "/{typeName}")
-    public Type getTypeByTypeName(@PathVariable String typeName) {
-        return typeService.getTypeByTypeName(typeName);
+    @GetMapping(path = "/type")
+    public Type getTypeByTypeName(@RequestParam String name) {
+        return typeService.getTypeByTypeName(name);
     }
 }

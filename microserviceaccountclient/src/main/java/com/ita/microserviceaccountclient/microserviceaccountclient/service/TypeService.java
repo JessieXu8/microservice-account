@@ -24,10 +24,10 @@ public class TypeService {
         return null;
     }
 
-    public Type findTypeByTypeName(String type) {
+    public Type findTypeByTypeName(Type type) {
         String url = ClientUtil.getUrl(discoveryClient.getInstances("micro-service-type-client"));
         if(!StringUtils.isEmpty(url)){
-            return restTemplate.getForObject(url+ "/"+type,Type.class);
+            return restTemplate.getForObject(url + "/type?name=" + type.getType(),Type.class);
         }
         return null;
     }
