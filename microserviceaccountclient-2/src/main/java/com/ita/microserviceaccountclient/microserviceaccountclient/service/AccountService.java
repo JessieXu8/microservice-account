@@ -30,7 +30,7 @@ public class AccountService {
     }
 
     public void save(Account account, User user) {
-        Type type = typeService.findTypeByTypeName(account.getType().getType());
+        Type type = typeService.findTypeByTypeName(account.getType());
         if(type == null) {
             typeService.save(account.getType());
         } else account.setType(type);
@@ -62,7 +62,7 @@ public class AccountService {
             oldAccount.setAmount(newAccount.getAmount());
             setDate(oldAccount, newAccount);
 //            oldAccount.setDate(newAccount.getDate());
-            oldAccount.setType(typeService.findTypeByTypeName(newAccount.getType().getType()));
+            oldAccount.setType(typeService.findTypeByTypeName(newAccount.getType()));
             oldAccount.setRemark(newAccount.getRemark());
             accountRepository.save(oldAccount);
             return true;
